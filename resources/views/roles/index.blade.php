@@ -1,0 +1,117 @@
+<x-app-layout>
+    <x-slot name="header">
+       
+
+        <div class="flex items-center justify-between mt-4">
+
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Role List') }}
+            </h2>
+
+            @can('create role')
+
+            <a href="{{ route('roles.create')}}">
+                <x-primary-button class="ms-3">
+                    {{ __('Create') }}  
+                </x-primary-button>
+            </a> 
+
+            @endcan
+        </div>
+
+
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+
+                <x-message></x-message>
+
+                <table class="w-full">
+                    <thead class="bg-gray-50" >
+                        <tr class="border-b" >
+                            <th class="px-6 py-3 text-left">#</th>
+                            <th class="px-6 py-3 text-left">Name</th>
+                            <th class="px-6 py-3 text-left"> Permission </th>
+                            <th class="px-6 py-3 text-left"> Created</th>
+                            <th class="px-6 py-3 text-center">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="bg-white">
+                        @if($roles->isNotEmpty())
+                            @foreach($roles as $role)
+                            <tr class="border-b" >
+                                <td class="px-6 py-3 text-left">{{$role->id}}</td>
+                                <td class="px-6 py-3 text-left">{{$role->name}}</td>
+                                <td class="px-6 py-3 text-left"> {{ $role->permissions->pluck('name')}}</td>
+                                <td class="px-6 py-3 text-left">{{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y')}}</td>
+                                <td class="px-6 py-3 text-center">
+                                @can('create edit')
+
+                                <a href="{{ route('roles.edit', $role->id)}}">
+                                    <x-primary-button class="ms-3">
+                                        {{ __('Edit') }}  
+                                    </x-primary-button>
+                                </a> 
+                                
+                                @endcan
+                                
+                                @can('create delete')
+                                <x-danger-button class="ms-3"  x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')">
+                            
+                                       {{ __('Delete') }}
+
+                                </x-danger-button>
+
+                                @endcan
+
+  
+                                </td>
+                            </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
+                </table>
+
+                <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
+        <form method="post" action="{{ route('roles.destroy',$role->id) }}" class="p-6">
+            @csrf
+            @method('delete')
+
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Are you sure you want to delete this Role ?') }}
+            </h2>
+
+            <p class="mt-1 text-sm text-gray-600">
+                {{ __('Once your Role is deleted, all of its resources and data will be permanently deleted.') }}
+            </p>
+
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-danger-button class="ms-3">
+                    {{ __('Delete') }}
+                </x-danger-button>
+            </div>
+        </form>
+    </x-modal>
+
+
+                <div class="my-3">
+
+                    {{ $roles->links() }}
+
+                </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
