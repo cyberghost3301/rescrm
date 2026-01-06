@@ -30,6 +30,7 @@
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "APP_URL": "https://${VERCEL_URL}",
+        "APP_KEY": "base64:kl7jfhKQC4t9wx5pU9q2/kAwB/GsYLbLWzNk3O9VkWg=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
