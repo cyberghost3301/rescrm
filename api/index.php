@@ -4,18 +4,16 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-// NOTE: We are in the 'api' folder, so '../' points to the root.
-
-// Check for maintenance mode
+// Correct path to maintenance mode
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
-// Register the Composer autoloader
+// Correct path to autoload
 require __DIR__.'/../vendor/autoload.php';
 
-// Bootstrap Laravel
+// Correct path to bootstrap
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-// Handle the request
+// Handle request
 $app->handleRequest(Request::capture());

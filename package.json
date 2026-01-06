@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build --config vite.custom.config.js",
+        "build": "rm -rf public/index.php && vite build --config vite.custom.config.js",
         "dev": "vite"
     },
     "devDependencies": {
